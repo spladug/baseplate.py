@@ -1,3 +1,89 @@
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "baseplate"
+version = "1.2.0"
+description = "A library to build services on"
+license = "BSD-3-Clause"
+authors = ["Neil Williams <neil@reddit.com>"]
+readme = "README.rst"
+repository = "https://github.com/reddit/baseplate.py"
+documentation = "https://baseplate.readthedocs.io/en/stable/"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+packages = [{ include = "baseplate"}]
+include = [
+    "bin/*",
+    "baseplate/thrift/baseplate.thrift",
+]
+
+
+[[tool.poetry.source]]
+name = "reddit wheelhouse"
+url = "http://spladug.s3-website.us-east-1.amazonaws.com/simple/"
+default = true
+
+
+[tool.poetry.dependencies]
+python = "^3.6.2"
+
+gevent = "^1.3"
+posix_ipc = "^1.0"
+pyjwt = "^1.6"
+requests = "^2.21"
+thrift = "^0.12"
+
+cassandra-driver = { version = "^3.13.0", optional = true }
+confluent-kafka = { version = "^1.1", optional = true }
+cqlmapper = { version = "^0.1", optional = true }
+hvac = { version = "~0.2.17", optional = true }
+kazoo = { version = "^2.5.0", optional = true }
+kombu = { version = "^4.0", optional = true }
+pymemcache = { version = "^1.3", optional = true }
+pyramid = { version = "^1.9", optional = true }
+redis = { version = "^2.10", optional = true }
+sqlalchemy = { version = "^1.1", optional = true }
+
+
+[tool.poetry.extras]
+amqp = ["kombu"]
+cassandra = ["cassandra-driver"]
+cqlmapper = ["cqlmapper"]
+kafka = ["confluent-kafka"]
+memcache = ["pymemcache"]
+pyramid = ["pyramid"]
+redis = ["redis"]
+sql = ["sqlalchemy"]
+vault = ["hvac"]
+zookeeper = ["kazoo"]
+
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+flake8 = "^3.7"
+mypy = "^0.740"
+pylint = "^2.4"
+pytest = "^4.6"
+pytest_cov = "^2.6.1"
+pytz = "^2019.3"
+reorder-python-imports = "^1.6"
+
+
+[tool.poetry.plugins."distutils.commands"]
+build_thrift = "baseplate.frameworks.thrift.command:BuildThriftCommand"
+
+
+[tool.poetry.plugins."paste.app_factory"]
+main = "baseplate.frameworks.pyramid:paste_make_app"
+
+
 [tool.black]
 line-length = 100
 target-version = ['py36']
