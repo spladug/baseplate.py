@@ -294,6 +294,17 @@ class SecretsStore(ContextFactory):
         return _CachingSecretsStore(self._filewatcher)
 
 
+class FakeSecretsStore(SecretsStore):
+    def __init__(self, fake_secrets):
+        self.fake_secrets = fake_secrets
+
+    def _get_data(self):
+        return self.fake_secrets
+
+    def make_object_for_context(self, name: str, span: Span) -> "SecretsStore":
+        return self
+
+
 class _CachingSecretsStore(SecretsStore):
     """Lazily load and cache the parsed data until the server span ends."""
 
