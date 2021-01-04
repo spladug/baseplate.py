@@ -18,7 +18,7 @@ setup(
         "pyjwt>=1.6.0",
         "python-json-logger~=0.1",
         "requests>=2.21.0",
-        "thrift>=0.12.0",
+        "thrift>=0.14.0",
         "gevent>=1.3",
     ],
     extras_require={
